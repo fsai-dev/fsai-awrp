@@ -9,7 +9,7 @@ pip install fsai-awrp
 
 ## Usage
 Set the environment variable and run your application:
-ARGO_PROGRESS_FILE=/tmp/progress.txt
+`ARGO_PROGRESS_FILE=/tmp/progress.txt`
 
 ```shell
 from fsai_awrp.fsai_awrp import ArgoWorkflowsReportProgress
