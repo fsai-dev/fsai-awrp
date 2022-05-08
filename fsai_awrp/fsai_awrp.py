@@ -10,12 +10,10 @@ class ArgoWorkflowsReportProgress:
         self.save_interval = 2
 
     def set_current_progress(self, current_progress):
-        if self.current_progress <= self.total_progress:
-            self.current_progress = current_progress
+        self.current_progress = current_progress
 
     def set_total_progress(self, total_progress):
-        if self.total_progress <= 1:
-            self.total_progress = total_progress
+        self.total_progress = total_progress
 
     def set_save_interval(self, save_interval):
         self.save_interval = save_interval
@@ -23,12 +21,14 @@ class ArgoWorkflowsReportProgress:
     def get_progress_file_path(self):
         return os.environ.get("ARGO_PROGRESS_FILE", "/tmp/progress.txt")
 
+    def get_progress_percent(self):
+        return self.current_progress / self.total_progress
+
     def save_file(self):
         while True:
             with open(self.get_progress_file_path(), "w") as f:
                 f.write("%s/%s" % (self.current_progress, self.total_progress))
                 f.close
-            print(self.current_progress, self.total_progress)
             time.sleep(self.save_interval)
 
     def start_reporting(self):
@@ -38,4 +38,5 @@ class ArgoWorkflowsReportProgress:
 
         # Start the file save thread
         t = Thread(target=self.save_file)
+        t.daemon=True    
         t.start()
